@@ -2,23 +2,20 @@ import { Arr, defineAocModule, type Pos, readLines } from "@/lib";
 
 const lines: string[] = readLines("day02/input.txt");
 
+function parseInput() {
+	return lines[0]!.split(",").map((p) => p.split("-").map((x) => +x) as Pos);
+}
+
 function sol1(): number {
-	const ranges = lines[0]!
-		.split(",")
-		.map((part) => part.split("-").map((x) => +x) as Pos);
+	const ranges = parseInput();
 
 	let sum = 0;
 
 	for (const [start, end] of ranges) {
 		for (let i = start; i <= end; i++) {
 			const str = `${i}`;
-			if (str.length % 2 !== 0) {
-				continue;
-			}
-			const first = str.slice(0, str.length / 2);
-			const second = str.slice(str.length / 2);
 
-			if (first === second) {
+			if (str.slice(0, str.length / 2) === str.slice(str.length / 2)) {
 				sum += i;
 			}
 		}
@@ -28,9 +25,7 @@ function sol1(): number {
 }
 
 function sol2(): number {
-	const ranges = lines[0]!
-		.split(",")
-		.map((part) => part.split("-").map((x) => +x) as Pos);
+	const ranges = parseInput();
 
 	let sum = 0;
 
@@ -40,9 +35,7 @@ function sol2(): number {
 			const mid = Math.floor(str.length / 2);
 
 			for (let j = 1; j <= mid; j++) {
-				const chunks = Arr.chunk(str.split(""), j).map((chunk) =>
-					chunk.join(""),
-				);
+				const chunks = Arr.chunk(str.split(""), j).map((c) => c.join(""));
 				if (chunks.every((chunk) => chunk === chunks[0])) {
 					sum += i;
 					break;
