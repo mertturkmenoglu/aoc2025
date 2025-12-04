@@ -28,6 +28,18 @@ export function repeat<T>(n: number, el: T): T[] {
 	return new Array(n).fill(el);
 }
 
+export function rep<T>(
+	arr: T[],
+	fn: (el: T, idx: number, arr: T[]) => void,
+): T[] {
+	for (let i = 0; i < arr.length; i++) {
+		const el = arr[i];
+		if (!el) continue;
+		fn(el, i, arr);
+	}
+	return arr;
+}
+
 /**
  * Create an array and fill with a range of numbers.
  * @param start is the start of the range (inclusive).
