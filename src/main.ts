@@ -38,13 +38,13 @@ function mux(day: string) {
 
 import { type AocModule, formatTime, measure } from "@/lib";
 
-function main() {
+async function main() {
 	const day = (Bun.env.DAY ?? "").padStart(2, "0");
 	console.log("Day:", day);
 	const module = mux(day);
 
-	const [res1, dur1] = measure(module.sol1);
-	const [res2, dur2] = measure(module.sol2);
+	const [res1, dur1] = await measure(module.sol1);
+	const [res2, dur2] = await measure(module.sol2);
 
 	console.info("Day:", module.day);
 	console.table([
@@ -65,4 +65,4 @@ function main() {
 	]);
 }
 
-main();
+await main();
