@@ -23,7 +23,7 @@ const C = ([i, j]: Pos) => N([i, j]).filter((x) => x === "@").length < 4;
 const T = async (F: Fn) =>
 	Mtr.forEachCell(M, (el, i, j) => F(el === "@" && C([i, j]) ? [[i, j]] : []));
 const B = () => new Set(A.map((x) => x.join(","))).size;
-const D = () => Promise.resolve(Arr.rep(A, (p) => Mtr.set(M, p, ".")));
+const D = async () => Arr.rep(A, (p) => Mtr.set(M, p, "."));
 const E = () => T((pos) => A.push(...pos));
 const F = () => A.length;
 const G = (P = F()) =>
