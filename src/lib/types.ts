@@ -21,3 +21,5 @@ export type Pair<T, U> = [T, U];
  * It's a generic type alias for number 2-tuples.
  */
 export type Pos = [number, number];
+
+export type Range = [number, number];
