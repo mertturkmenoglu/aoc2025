@@ -1,9 +1,12 @@
+/** biome-ignore-all lint/style/noNonNullAssertion: No need */
 import { defineAocModule, type Pos, readByEmptyLine } from "@/lib";
 
 const [group1, group2] = readByEmptyLine("day05/input.txt");
+const ranges = group1!
+	.map((line) => line.split("-").map(Number) as Pos)
+	.sort((a, b) => a[0] - b[0]);
 
 function sol1(): number {
-	const ranges = group1!.map((line) => line.split("-").map(Number) as Pos);
 	const ids = group2!.map(Number);
 
 	let freshCounter = 0;
@@ -25,13 +28,9 @@ function sol1(): number {
 }
 
 function sol2(): number {
-	const ranges = group1!.map((line) => line.split("-").map(Number) as Pos);
-
-	const sorted = ranges.sort((a, b) => a[0] - b[0]);
-
 	const res: Pos[] = [];
 
-	for (let i = 0; i < sorted.length; i++) {
+	for (let i = 0; i < ranges.length; i++) {
 		const start = ranges[i]![0]!;
 		let end = ranges[i]![1]!;
 
@@ -39,7 +38,7 @@ function sol2(): number {
 			continue;
 		}
 
-		for (let j = i + 1; j < sorted.length; j++) {
+		for (let j = i + 1; j < ranges.length; j++) {
 			if (ranges[j]![0]! <= end) {
 				end = Math.max(end, ranges[j]![1]!);
 			}
