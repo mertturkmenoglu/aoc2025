@@ -1,25 +1,21 @@
-/** biome-ignore-all lint/style/noNonNullAssertion: No need */
-import { defineAocModule, type Pos, readByEmptyLine } from "@/lib";
+import { defineAocModule, type Pos, Range, readByEmptyLine } from "@/lib";
 
-const [group1, group2] = readByEmptyLine("day05/input.txt");
-const ranges = group1!
+const [group1, group2] = readByEmptyLine("day05/input.txt") as [
+	string[],
+	string[],
+];
+
+const ranges = group1
 	.map((line) => line.split("-").map(Number) as Pos)
 	.sort((a, b) => a[0] - b[0]);
 
 function sol1(): number {
-	const ids = group2!.map(Number);
+	const ids = group2.map(Number);
 
 	let freshCounter = 0;
 
 	for (const id of ids) {
-		let bad = true;
-		for (const [a, b] of ranges) {
-			if (id >= a && id <= b) {
-				bad = false;
-				break;
-			}
-		}
-		if (!bad) {
+		if (ranges.some(([a, b]) => id >= a && id <= b)) {
 			freshCounter++;
 		}
 	}
@@ -28,28 +24,11 @@ function sol1(): number {
 }
 
 function sol2(): number {
-	const res: Pos[] = [];
-
-	for (let i = 0; i < ranges.length; i++) {
-		const start = ranges[i]![0]!;
-		let end = ranges[i]![1]!;
-
-		if (res.length > 0 && res[res.length - 1]![1] >= end) {
-			continue;
-		}
-
-		for (let j = i + 1; j < ranges.length; j++) {
-			if (ranges[j]![0]! <= end) {
-				end = Math.max(end, ranges[j]![1]!);
-			}
-		}
-
-		res.push([start, end]);
-	}
+	const merged = Range.merge(ranges);
 
 	let counter = 0;
 
-	for (const range of res) {
+	for (const range of merged) {
 		counter += range[1] - range[0] + 1;
 	}
 
