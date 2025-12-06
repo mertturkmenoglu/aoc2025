@@ -8,13 +8,12 @@ function sol1(): number {
 
 	for (let i = 0; i < cols; i++) {
 		const col = Mtr.col(lines, i);
-		const numbers = col.slice(0, col.length - 1);
-		const operation = col.at(-1)!;
-
-		let acc = operation === "+" ? 0 : 1;
+		const numbers = col.slice(0, col.length - 1).map(Number);
+		const op = col.at(-1)!;
+		let acc = op === "+" ? 0 : 1;
 
 		for (const num of numbers) {
-			acc = operation === "+" ? acc + +num : acc * +num;
+			acc = op === "+" ? acc + num : acc * num;
 		}
 
 		grand += acc;
@@ -31,33 +30,33 @@ function sol2(): number {
 
 	for (let i = 0; i < colsCount; i++) {
 		const col = Mtr.col(lines, i);
-		const maxLength = Arr.max(col.map((x) => x.length));
+		const max = Arr.max(col.map((x) => x.length));
 		const values = original.map((line) =>
-			line.slice(0, maxLength).replaceAll(" ", "0"),
+			line.slice(0, max).replaceAll(" ", "0"),
 		);
 
 		const numbers = values.slice(0, values.length - 1);
-		const operation = values.at(-1)!.replaceAll("0", "");
+		const op = values.at(-1)!.replaceAll("0", "");
 
-		let acc = operation === "+" ? 0 : 1;
+		let acc = op === "+" ? 0 : 1;
 
-		const nums: string[] = [];
+		const nums: number[] = [];
 
-		for (let j = 0; j < maxLength; j++) {
+		for (let j = 0; j < max; j++) {
 			const a = numbers
 				.map((x) => x[j]!)
 				.join("")
 				.replaceAll("0", "");
-			nums.push(a);
+			nums.push(+a);
 		}
 
 		for (const num of nums) {
-			acc = operation === "+" ? acc + +num : acc * +num;
+			acc = op === "+" ? acc + num : acc * num;
 		}
 
 		grand += acc;
 
-		original = original.map((x) => x.slice(maxLength + 1));
+		original = original.map((x) => x.slice(max + 1));
 	}
 
 	return grand;
