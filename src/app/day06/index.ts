@@ -1,12 +1,6 @@
 import { Arr, defineAocModule, Mtr, readLines } from "@/lib";
 
-const lines: string[][] = readLines("day06/input.txt").map((l) =>
-	l
-		.trim()
-		.split(" ")
-		.map((x) => x.trim())
-		.filter((x) => x !== ""),
-);
+const lines = readLines("day06/input.txt").map((l) => l.trim().split(/ +/));
 
 function sol1(): number {
 	const cols = lines[0]!.length;
