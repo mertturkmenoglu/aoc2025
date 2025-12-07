@@ -1,48 +1,42 @@
 import {
 	defineAocModule,
-	type Matrix,
 	Mtr,
 	type Pos,
 	posAdd,
 	posStr,
-	readLines,
+	readAsMatrix,
 } from "@/lib";
 
-const mtr = readLines("day07/input.txt").map((l) =>
-	l.split(""),
-) as Matrix<string>;
+const mtr = readAsMatrix("day07/input.txt");
+const first = [1, mtr[0]!.indexOf("S")!] as Pos;
 
 async function sol1() {
 	let splits = 0;
 
 	// Add first bean
-	Mtr.set(mtr, [1, mtr[0]!.indexOf("S")], "|");
+	Mtr.set(mtr, first, "|");
 
-	for (let r = 0; r < mtr.length; r++) {
-		for (let c = 0; c < mtr[r]!.length; c++) {
-			const cell = Mtr.at(mtr, [r, c]);
-
-			if (cell === "|") {
-				// Get the bottom cell
-				const bottom = Mtr.$at(mtr, [r + 1, c]);
-				// If the bottom is a splitter, split
-				if (bottom === "^") {
-					// Create two beans
-					// Check boundaries
-					if (Mtr.isOnGrid(mtr, [r + 1, c - 1])) {
-						Mtr.set(mtr, [r + 1, c - 1], "|");
-					}
-					if (Mtr.isOnGrid(mtr, [r + 1, c + 1])) {
-						Mtr.set(mtr, [r + 1, c + 1], "|");
-					}
-					splits += 1;
-				} else if (bottom === ".") {
-					// else if the bottom is empty '.' char, replace with bean
-					Mtr.set(mtr, [r + 1, c], "|");
+	Mtr.forEach(mtr, (v, [r, c]) => {
+		if (v === "|") {
+			// Get the bottom cell
+			const bottom = Mtr.$at(mtr, [r + 1, c]);
+			// If the bottom is a splitter, split
+			if (bottom === "^") {
+				// Create two beans
+				// Check boundaries
+				if (Mtr.isOnGrid(mtr, [r + 1, c - 1])) {
+					Mtr.set(mtr, [r + 1, c - 1], "|");
 				}
+				if (Mtr.isOnGrid(mtr, [r + 1, c + 1])) {
+					Mtr.set(mtr, [r + 1, c + 1], "|");
+				}
+				splits += 1;
+			} else if (bottom === ".") {
+				// else if the bottom is empty '.' char, replace with bean
+				Mtr.set(mtr, [r + 1, c], "|");
 			}
 		}
-	}
+	});
 
 	return splits;
 }
@@ -73,7 +67,7 @@ function paths(start: Pos): number {
 }
 
 function sol2(): number {
-	return paths([1, mtr[0]!.indexOf("S")]);
+	return paths(first);
 }
 
 export default defineAocModule({

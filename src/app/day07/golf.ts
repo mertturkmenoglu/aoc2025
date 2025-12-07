@@ -4,17 +4,16 @@
 import {
 	Arr,
 	defineAocModule,
-	type Matrix,
 	Mtr,
 	type Pos,
 	posAdd,
 	posStr,
-	readLines,
+	readAsMatrix,
 } from "@/lib";
 
 type G = Map<string, number>;
 
-let M: Matrix<string> = readLines("day07/input.txt").map((l) => l.split(""));
+let M = readAsMatrix("day07/input.txt");
 let F: Pos = posAdd([1, 0], Mtr.find(M, "S")!);
 Mtr.set(M, F, "|");
 let [SET, S] = [(p: Pos) => Mtr.set(M, p, "|"), 0];
