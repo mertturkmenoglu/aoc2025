@@ -1,10 +1,18 @@
-import { defineAocModule, type Matrix, Mtr, readLines } from "@/lib";
+import {
+	defineAocModule,
+	type Matrix,
+	Mtr,
+	type Pos,
+	posAdd,
+	posStr,
+	readLines,
+} from "@/lib";
 
 const mtr = readLines("day07/input.txt").map((l) =>
 	l.split(""),
 ) as Matrix<string>;
 
-function sol1(): number {
+async function sol1() {
 	let splits = 0;
 
 	// Add first bean
@@ -39,14 +47,39 @@ function sol1(): number {
 	return splits;
 }
 
+const memo = new Map<string, number>();
+
+function paths(start: Pos): number {
+	if (memo.has(posStr(start))) {
+		return memo.get(posStr(start))!;
+	}
+
+	let result = 0;
+
+	if (start[0] === mtr.length - 1) {
+		result = 1;
+	} else {
+		const below = Mtr.$at(mtr, posAdd(start, [1, 0]));
+
+		if (below === "^") {
+			result = paths(posAdd(start, [1, -1])) + paths(posAdd(start, [1, 1]));
+		} else {
+			result = paths(posAdd(start, [1, 0]));
+		}
+	}
+
+	memo.set(posStr(start), result);
+	return result;
+}
+
 function sol2(): number {
-	return 0;
+	return paths([1, mtr[0]!.indexOf("S")]);
 }
 
 export default defineAocModule({
 	day: 7,
-	exp1: 0,
-	exp2: 0,
+	exp1: 1711,
+	exp2: 36_706_966_158_365,
 	sol1,
 	sol2,
 });
