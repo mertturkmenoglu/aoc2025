@@ -257,30 +257,27 @@ export function revY<T>(m: Matrix<T>): Matrix<T> {
 	return res;
 }
 
-export function mapCell<T, V>(
-	m: Matrix<T>,
-	fn: (v: T, i: number, j: number) => V,
-): V[] {
+export function mapCell<T, V>(m: Matrix<T>, fn: (v: T, [i, j]: Pos) => V): V[] {
 	const [r, c] = dims(m);
 	const res: V[] = [];
 
 	for (let i = 0; i < r; i++) {
 		for (let j = 0; j < c; j++) {
-			res.push(fn(m[i]![j]!, i, j));
+			res.push(fn(m[i]![j]!, [i, j]));
 		}
 	}
 
 	return res;
 }
 
-export function forEachCell<T>(
+export function forEach<T>(
 	m: Matrix<T>,
-	fn: (v: T, i: number, j: number) => void,
+	fn: (v: T, [i, j]: Pos) => void,
 ): void {
 	const [r, c] = dims(m);
 	for (let i = 0; i < r; i++) {
 		for (let j = 0; j < c; j++) {
-			fn(m[i]![j]!, i, j);
+			fn(m[i]![j]!, [i, j]);
 		}
 	}
 }
