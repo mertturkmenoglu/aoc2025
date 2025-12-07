@@ -11,6 +11,19 @@ export function createMtr<T>([r, c]: Pos, fill: T): Matrix<T> {
 	return new Array(r).fill(0).map(() => new Array(c).fill(fill));
 }
 
+export function copy<T>(m: Matrix<T>): Matrix<T> {
+	const [r, c] = dims(m);
+	const m2 = createMtr([r, c], m[0]![0]!);
+
+	for (let i = 0; i < r; i++) {
+		for (let j = 0; j < c; j++) {
+			m2[i]![j] = m[i]![j]!;
+		}
+	}
+
+	return m2;
+}
+
 /**
  * Returns the 0 indexed `i`-th row.
  * @param m is the matrix
