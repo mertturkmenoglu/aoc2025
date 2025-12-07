@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/style/noNonNullAssertion: Don't care */
 import fs from "node:fs";
-import type { Pos } from "./types";
+import type { Matrix, Pos } from "./types";
 
 export function isNumberString(s: string): boolean {
 	return !Number.isNaN(Number.parseFloat(s));
@@ -10,6 +10,11 @@ export function readLines(path: string, relative = true): string[] {
 	const base = "src/app/";
 	const truePath = relative ? base + path : path;
 	return fs.readFileSync(truePath).toString().split("\n");
+}
+
+export function readAsMatrix(path: string, relative = true): Matrix<string> {
+	const lines = readLines(path, relative);
+	return lines.map((line) => line.split(""));
 }
 
 export function readByEmptyLine(path: string, relative = true): string[][] {
