@@ -21,7 +21,7 @@ const N = ([i, j]: Pos) =>
 	coefs.map(([dr, dc]) => Mtr.$at(M, [i + dr, j + dc]));
 const C = ([i, j]: Pos) => N([i, j]).filter((x) => x === "@").length < 4;
 const T = async (F: Fn) =>
-	Mtr.forEachCell(M, (el, i, j) => F(el === "@" && C([i, j]) ? [[i, j]] : []));
+	Mtr.forEach(M, (el, p) => F(el === "@" && C(p) ? [p] : []));
 const B = () => new Set(A.map((x) => x.join(","))).size;
 const D = async () => Arr.rep(A, (p) => Mtr.set(M, p, "."));
 const E = () => T((pos) => A.push(...pos));
