@@ -148,6 +148,15 @@ export function posEq(p1: Pos, p2: Pos): boolean {
 }
 
 /**
+ * Stringify given Pos param.
+ * @param p is the Pos to be stringified
+ * @returns stringified representation of Pos
+ */
+export function posStr(p: Pos): string {
+	return JSON.stringify(p);
+}
+
+/**
  * Reverse the position vector.
  * @param p is the position
  * @returns the new Pos vector.
