@@ -22,4 +22,6 @@ export type Pair<T, U> = [T, U];
  */
 export type Pos = [number, number];
 
+export type Pos3 = [number, number, number];
+
 export type Range = [number, number];

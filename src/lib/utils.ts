@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/style/noNonNullAssertion: Don't care */
 import fs from "node:fs";
-import type { Matrix, Pos } from "./types";
+import type { Matrix, Pos, Pos3 } from "./types";
 
 export function isNumberString(s: string): boolean {
 	return !Number.isNaN(Number.parseFloat(s));
@@ -188,4 +188,16 @@ export function posMul(p: Pos, scalar: number): Pos {
  */
 export function nums(s: string): number[] {
 	return [...s.matchAll(/-?\d+/g)].map((x) => +x[0]);
+}
+
+export function dist3([x1, y1, z1]: Pos3, [x2, y2, z2]: Pos3): number {
+	const x = (x1 - x2) ** 2;
+	const y = (y1 - y2) ** 2;
+	const z = (z1 - z2) ** 2;
+
+	return Math.sqrt(x + y + z);
+}
+
+export function pos3Eq(p1: Pos3, p2: Pos3): boolean {
+	return p1[0] === p2[0] && p1[1] === p2[1] && p1[2] === p2[2];
 }
