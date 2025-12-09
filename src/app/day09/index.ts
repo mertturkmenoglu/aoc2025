@@ -1,16 +1,14 @@
-import { Arr, defineAocModule, type Pos, readLines } from "@/lib";
+import { Arr, defineAocModule, nums, type Pos, readLines } from "@/lib";
 
-const lines = readLines("day09/input.txt").map(
-	(l) => l.split(",").map(Number) as Pos,
-);
+const polygon = readLines("day09/input.txt").map((l) => nums(l) as Pos);
 
 function sol1(): number {
 	let area = -1;
 
-	for (let i = 0; i < lines.length; i++) {
-		for (let j = 0; j < lines.length; j++) {
-			const [x1, y1] = lines[i]!;
-			const [x2, y2] = lines[j]!;
+	for (let i = 0; i < polygon.length; i++) {
+		for (let j = 0; j < polygon.length; j++) {
+			const [x1, y1] = polygon[i]!;
+			const [x2, y2] = polygon[j]!;
 
 			const newArea = (Math.abs(x2 - x1) + 1) * (Math.abs(y2 - y1) + 1);
 
@@ -25,13 +23,13 @@ function sol1(): number {
 
 function sol2(): number {
 	const areas: number[] = [];
-	for (let i = 0; i < lines.length; i++) {
-		for (let j = 0; j < lines.length; j++) {
-			const [x1, y1] = lines[i]!;
-			const [x2, y2] = lines[j]!;
+	for (let i = 0; i < polygon.length; i++) {
+		for (let j = 0; j < polygon.length; j++) {
+			const [x1, y1] = polygon[i]!;
+			const [x2, y2] = polygon[j]!;
 
 			const area = (Math.abs(x2 - x1) + 1) * (Math.abs(y2 - y1) + 1);
-			if (isInside([x1, y1], [x2, y2], lines)) {
+			if (isInside([x1, y1], [x2, y2], polygon)) {
 				areas.push(area);
 			}
 		}
