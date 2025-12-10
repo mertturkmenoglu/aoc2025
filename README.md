@@ -1,15 +1,36 @@
-# aoc2025
+# Advent of Code 2025 Solutions
 
-To install dependencies:
+## Prerequisites
+
+- [Bun](https://bun.sh/) (v1.3.0 or later)
+
+## Setup
+
+- Install dependencies:
 
 ```bash
 bun install
 ```
 
-To run:
+- Create a `.env` file.
+
+```bash
+touch .env
+```
+
+- Add `DAY=1` and `MODE=run` to your `.env` file.
+
+```
+DAY=1
+MODE=run
+```
+
+- You can change the `DAY` value to run different days.
+
+- You can change the `MODE` value to `golf` to run the [code golf](https://en.wikipedia.org/wiki/Code_golf) version of that day's solution.
+
+- You can run the code:
 
 ```bash
 bun dev
 ```
-
-- Create a `.env` file and add `DAY=1`. Change the day as you wish.
