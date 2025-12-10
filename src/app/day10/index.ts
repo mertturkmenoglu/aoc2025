@@ -1,8 +1,11 @@
-import { defineAocModule, readLines } from "@/lib";
+import { Arr, defineAocModule, readLines } from "@/lib";
 
 const lines: string[] = readLines("day10/input.txt");
 
 type Button = number[];
+type Q = [boolean[], number];
+
+const S = JSON.stringify;
 
 type Machine = {
 	config: boolean[];
@@ -36,43 +39,34 @@ function parseMachine(line: string): Machine {
 }
 
 function isTarget(current: boolean[], target: boolean[]): boolean {
-	if (current.length !== target.length) return false;
-
-	for (let i = 0; i < target.length; i++) {
-		if (current[i] !== target[i]) {
-			return false;
-		}
-	}
-
-	return true;
+	return S(current) === S(target);
 }
 
 function findFewestPress(machine: Machine): number {
-	const open: [boolean[], number][] = [
-		[new Array(machine.config.length).fill(false), 0],
-	];
-	const seen: [boolean[], number][] = [];
+	const cfg = machine.config;
+	const open: Q[] = [[Arr.repeat(cfg.length, false), 0]];
+	const seen = new Set<string>();
 
 	while (open.length > 0) {
-		const q = open.shift()!;
-		seen.push(q);
+		const [curr, step] = open.shift()!;
+		seen.add(S(curr));
 
-		if (isTarget(q[0], machine.config)) {
-			return q[1];
+		if (isTarget(curr, cfg)) {
+			return step;
 		}
 
 		for (const b of machine.buttons) {
-			const newCfg = press(q[0], b);
+			const newCfg = press(curr, b);
 
-			if (seen.some((x) => JSON.stringify(x[0]) === JSON.stringify(newCfg))) {
+			if (seen.has(S(newCfg))) {
 				continue;
 			}
 
-			if (open.some((x) => JSON.stringify(x[0]) === JSON.stringify(newCfg))) {
+			if (open.some((x) => S(x[0]) === S(newCfg))) {
 				continue;
 			}
 
-			open.push([newCfg, q[1] + 1]);
+			open.push([newCfg, step + 1]);
 		}
 	}
 
@@ -80,10 +74,12 @@ function findFewestPress(machine: Machine): number {
 }
 
 function press(cfg: boolean[], btn: number[]) {
-	const out: boolean[] = JSON.parse(JSON.stringify(cfg));
+	const out = Arr.copy(cfg);
+
 	for (const num of btn) {
 		out[num] = !out[num];
 	}
+
 	return out;
 }
 
@@ -92,8 +88,7 @@ function sol1(): number {
 	let total = 0;
 
 	for (const machine of input) {
-		const a = findFewestPress(machine);
-		total += a;
+		total += findFewestPress(machine);
 	}
 
 	return total;
