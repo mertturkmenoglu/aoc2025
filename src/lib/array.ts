@@ -18,6 +18,16 @@ export function indices(n: number): number[] {
 	return [...new Array(n).keys()];
 }
 
+export function copy<T>(arr: T[]): T[] {
+	const out: T[] = new Array(arr.length);
+
+	for (let i = 0; i < arr.length; i++) {
+		out[i] = arr[i]!;
+	}
+
+	return out;
+}
+
 /**
  * Create an array with length `n` and fill with `el`.
  * @param n is the array length.
