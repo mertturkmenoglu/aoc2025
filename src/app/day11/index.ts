@@ -1,8 +1,6 @@
-import { type BfsNode, defineAocModule, readLines } from "@/lib";
+import { defineAocModule, readLines } from "@/lib";
 
 const lines: string[] = readLines("day11/input.txt");
-
-type Node = [string, string[]];
 
 function parseInput() {
 	const output: [string, string[]][] = [];
@@ -16,62 +14,52 @@ function parseInput() {
 	return output;
 }
 
-function solve(nodes: Node[]) {
-	const start = nodes.find((x) => x[0] === "you")!;
-	const open: BfsNode<Node>[] = [{ value: start, parent: null }];
-	const seen: BfsNode<Node>[] = [];
-	const paths = new Set<string>();
+const nodes = parseInput();
 
-	while (open.length > 0) {
-		const q = open.shift()!;
-		seen.push(q);
+const memo = new Map<string, number>();
 
-		if (q.value[0] === "out") {
-			const path = constructPath(q);
-			paths.add(path);
-			continue;
-		}
+function getPaths(start: string, end: string) {
+	if (start === end) return 1;
 
-		for (const child of q.value[1]) {
-			const el = nodes.find((x) => x[0] === child);
+	if (start === "out") return 0;
 
-			if (el === undefined) {
-				open.push({ value: ["out", []], parent: q });
-			} else {
-				open.push({ value: el, parent: q });
-			}
-		}
+	const key = `${start},${end}`;
+
+	if (memo.has(key)) return memo.get(key)!;
+
+	const el = nodes.find((x) => x[0] === start);
+
+	if (!el) throw new Error("el expected");
+
+	let paths = 0;
+
+	for (const child of el[1]) {
+		paths += getPaths(child, end);
 	}
 
-	return paths.size;
-}
+	memo.set(key, paths);
 
-function constructPath(end: BfsNode<Node> | null): string {
-	let tmp = end;
-	const path: string[] = [];
-
-	while (tmp !== null) {
-		path.push(tmp.value[0]);
-		tmp = tmp.parent;
-	}
-
-	return JSON.stringify(path.toReversed());
+	return paths;
 }
 
 function sol1(): number {
-	const nodes = parseInput();
-
-	return solve(nodes);
+	return getPaths("you", "out");
 }
 
 function sol2(): number {
-	return 0;
+	const a = getPaths("svr", "fft");
+	const b = getPaths("fft", "dac");
+	const c = getPaths("dac", "out");
+	const d = getPaths("svr", "dac");
+	const e = getPaths("dac", "fft");
+	const f = getPaths("fft", "out");
+	return a * b * c + d * e * f;
 }
 
 export default defineAocModule({
 	day: 11,
-	exp1: 0,
-	exp2: 0,
+	exp1: 472,
+	exp2: 526_811_953_334_940,
 	sol1,
 	sol2,
 });
