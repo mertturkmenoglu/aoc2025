@@ -97,3 +97,40 @@ export function chunk<T>(arr: T[], size: number): T[][] {
 
 	return chunks;
 }
+
+export function count<T>(arr: T[], el: T): number {
+	let counter = 0;
+
+	for (const x of arr) {
+		if (x === el) {
+			counter++;
+		}
+	}
+
+	return counter;
+}
+
+export function countBy<T>(
+	arr: T[],
+	predicate: (el: T, i: number) => boolean,
+): number {
+	let counter = 0;
+
+	for (let i = 0; i < arr.length; i++) {
+		if (predicate(arr[i]!, i)) {
+			counter++;
+		}
+	}
+
+	return counter;
+}
+
+export function sum(arr: number[]): number {
+	let counter = 0;
+
+	for (const el of arr) {
+		counter += el;
+	}
+
+	return counter;
+}
